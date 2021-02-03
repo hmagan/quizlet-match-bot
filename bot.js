@@ -42,17 +42,14 @@ function eventFire(el, etype){
     }
 }
 
-//execute the script when the game is started
-document.getElementsByClassName("UIButton--hero")[0].onclick = function(){
+function solve(){
     console.log("SCRIPT INITIALIZED");
     //529ms delay; varies by set, so modify to your needs; anything less and Quizlet typically will always automatically rejects your score
     let delay = 529;
     setTimeout(function(){
-        //get all tiles and put them into an array
         let tiles = Array.from(document.getElementsByClassName("MatchModeQuestionGridTile-text"));
         //filter through each pair of tiles while there are still any left
         while(tiles.length > 0){
-            //find the index of the match for the tile at index 0
             let idx = findMatch(tiles[0].childNodes[0].childNodes[0].textContent, tiles);
             console.log("MATCH FOUND: " + tiles[0].childNodes[0].childNodes[0].textContent + " AND " + tiles[idx].childNodes[0].childNodes[0].textContent);
             //execute a click on both tiles in the match
@@ -64,4 +61,45 @@ document.getElementsByClassName("UIButton--hero")[0].onclick = function(){
         }
         console.log("SCRIPT TERMINATED");
     }, delay);
-};
+}
+
+function inject(){
+    let fadeOut = setInterval(function(){
+        if(opacity > 0){
+            opacity -= 0.01;
+            //for(let i = 0; i < ui.length; i++){
+                ui[0].style.opacity = opacity;
+            //}
+        } else {
+            clearInterval(fadeOut);
+        }
+    }, 10);
+
+    ui[0].textContent = "Script loaded.";
+    ui[1].textContent = "Click the button below to get started."
+    ui[2] = oldButton;
+    ui[3].textContent = "Inject script";
+
+    let fadeIn = setInterval(function(){
+        if(opacity < 1.00){
+            opacity += 0.01;
+            for(let i = 0; i < ui.length; i++){
+                ui[i].style.opacity = opacity;
+            }
+        } else {
+            clearInterval(fadeIn);
+        }
+    }, 10);
+
+    ui[2].onclick = solve;
+}
+
+let oldButton = document.getElementsByClassName("UIButton--hero")[0];
+let newButton = oldButton.cloneNode(true);
+oldButton.parentNode.replaceChild(newButton, oldButton);
+
+//header, text content, button, button label
+let ui = [document.getElementsByClassName("UIHeading--three")[2], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0]];
+let opacity = 1.00;
+
+newButton.onclick = inject;
