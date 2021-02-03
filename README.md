@@ -12,4 +12,6 @@ Steps:
 ex: https://quizlet.com/46182376/micromatch
 5. Before clicking "Start game", paste bot.js with your array pasted into it into the browser console. Make sure to press enter, and then click "Start game".
 
-That's it. If your script is running too quickly and Quizlet is rejecting your score, increase the delay in the code. If a term has double quotes in it somewhere, make sure to add a backslash \ in front of the double quotes so the string can be read properly. Since the speed of the algorithm varies a bit, you might have to run it a few times in order to get Quizlet to accept it. If that doesn't work, just increase the delay in the code like I said.
+That's it. If your script is running too quickly and Quizlet is rejecting your score, increase the delay in the code. Since the speed of the algorithm varies a bit, you might have to run it a few times in order to get Quizlet to accept it. If that doesn't work, just increase the delay in the code like I said.
+
+2/3/2021: Now works with terms that have extra formatting and automatically escapes double quote characters
