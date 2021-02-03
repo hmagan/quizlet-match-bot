@@ -24,7 +24,7 @@ list += "]";
 for(let i = 0; i < list.length; i++){
     if(list.substring(i, i+1) === "<"){
         //removes <div>, <span>, <p> and closing tags i.e. </p>
-        if(i != list.length-1 && (list.substring(i+1, i+2) === "/" || list.substring(i+1, i+2) === "d") || list.substring(i+1, i+2) === "s" || list.substring(i+1, i+2) === "p"){
+        if(i != list.length-1 && (list.substring(i+1, i+2) === "/" || list.substring(i+1, i+2) === "d" || list.substring(i+1, i+2) === "s" || list.substring(i+1, i+2) === "p" || list.substring(i+1, i+2) === "b")){
             while(list.substring(i, i+1) !== ">"){
                 list = list.substring(0, i) + list.substring(i + 1);
             }
