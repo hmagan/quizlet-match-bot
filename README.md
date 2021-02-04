@@ -1,7 +1,7 @@
 # quizlet-match-bot
 Bot designed to complete the match minigame in record time. Quizlet hack/cheat B)
 
-Note: configured it to only work with sets that have text. If a term is only composed of an image, this will not work (as of now at least).
+Note: configured it to only work with sets that have text. If a term is only composed of an image, this will not work (as of now at least). Sets with repeat terms/definitions will likely mess things up.
 
 Steps:
 
