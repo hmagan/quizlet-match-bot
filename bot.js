@@ -42,20 +42,17 @@ function eventFire(el, etype){
     }
 }
 
-function solve(){
+//solves match after a specified delay
+function solve(delay){
     console.log("SCRIPT INITIALIZED");
-    //529ms delay; varies by set, so modify to your needs; anything less and Quizlet typically will always automatically rejects your score
-    let delay = 529;
+    //600ms delay by default; varies by set, so modify to your needs; anything less and Quizlet might reject your score
     setTimeout(function(){
         let tiles = Array.from(document.getElementsByClassName("MatchModeQuestionGridTile-text"));
-        //filter through each pair of tiles while there are still any left
         while(tiles.length > 0){
             let idx = findMatch(tiles[0].childNodes[0].childNodes[0].textContent, tiles);
             console.log("MATCH FOUND: " + tiles[0].childNodes[0].childNodes[0].textContent + " AND " + tiles[idx].childNodes[0].childNodes[0].textContent);
-            //execute a click on both tiles in the match
             eventFire(tiles[0].childNodes[0].childNodes[0], "pointerdown");
             eventFire(tiles[idx].childNodes[0].childNodes[0], "pointerdown");
-            //remove both tiles from the array
             tiles.splice(idx, 1);
             tiles.splice(0, 1);
         }
@@ -63,43 +60,66 @@ function solve(){
     }, delay);
 }
 
-function inject(){
+//loads up ui; mostly formatting
+function inject(opacity){
     let fadeOut = setInterval(function(){
         if(opacity > 0){
             opacity -= 0.01;
-            //for(let i = 0; i < ui.length; i++){
-                ui[0].style.opacity = opacity;
-            //}
-        } else {
-            clearInterval(fadeOut);
-        }
-    }, 10);
-
-    ui[0].textContent = "Script loaded.";
-    ui[1].textContent = "Click the button below to get started."
-    ui[2] = oldButton;
-    ui[3].textContent = "Inject script";
-
-    let fadeIn = setInterval(function(){
-        if(opacity < 1.00){
-            opacity += 0.01;
-            for(let i = 0; i < ui.length; i++){
+            for(let i = 0; i < ui.length-1; i++){
                 ui[i].style.opacity = opacity;
             }
         } else {
-            clearInterval(fadeIn);
-        }
-    }, 10);
+            clearInterval(fadeOut);
+            ui[0].textContent = "Script loaded.";
+            ui[1].textContent = "Set the rough amount of time it takes to run the script. By default it is 600ms, which should be sufficient for a 0.5s time without going under Quizlet's minimum. Tweak at your own risk."
+            ui[2].style.display = "none";
+            document.getElementsByClassName("UIButton--hero")[0].style.opacity = 0.00;
+            document.getElementsByClassName("UIButton--hero")[0].style.display = "inline-block";
+            ui[2] = document.getElementsByClassName("UIButton--hero")[0];
+            ui[3].textContent = "Inject script";
+            ui[4].style.opacity = 0.00;
+            ui[4].style.display = "inline-block";
+            ui[4].style.marginBottom = "50px";
+            ui[4].style.fontSize = "18px";
+            ui[4].defaultValue = 600;
+            ui[4].type = "number";
+            ui[4].step = 100;
+            ui[4].min = 0;
 
-    ui[2].onclick = solve;
+            let fadeIn = setInterval(function(){
+                if(opacity < 1.00){
+                    opacity += 0.01;
+                    for(let i = 0; i < ui.length; i++){
+                        ui[i].style.opacity = opacity;
+                    }
+                } else {
+                    clearInterval(fadeIn);
+                    ui[2].onclick = function(){
+                        let delay = ui[4].value;
+                        solve(delay);
+                    };
+                }
+            }, 10);
+        }
+    }, 5);
 }
 
+//creates a fake button to load up the cheat, hides the old button for later, and adds an input field
+let newButton = document.getElementsByClassName("UIButton--hero")[0].cloneNode(true);
+document.getElementsByClassName("UIButton--hero")[0].style.display = "none";
 let oldButton = document.getElementsByClassName("UIButton--hero")[0];
-let newButton = oldButton.cloneNode(true);
-oldButton.parentNode.replaceChild(newButton, oldButton);
 
-//header, text content, button, button label
-let ui = [document.getElementsByClassName("UIHeading--three")[2], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0]];
-let opacity = 1.00;
+let input = document.createElement("input");
+input.style.display = "none";
 
-newButton.onclick = inject;
+document.getElementsByClassName("UIButton--hero")[0].remove();
+document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(input);
+document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(oldButton);
+document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(newButton);
+
+//header, text content, button, button label, input
+let ui = [document.getElementsByClassName("UIHeading--three")[2], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0], input];
+
+newButton.onclick = function(){
+    inject(1.00);
+};
