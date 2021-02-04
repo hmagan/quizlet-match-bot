@@ -61,7 +61,8 @@ function solve(delay){
 }
 
 //loads up ui; mostly formatting
-function inject(opacity){
+function inject(){
+    let opacity = 1.00;
     let fadeOut = setInterval(function(){
         if(opacity > 0){
             opacity -= 0.01;
@@ -106,6 +107,7 @@ function inject(opacity){
 
 //creates a fake button to load up the cheat, hides the old button for later, and adds an input field
 let newButton = document.getElementsByClassName("UIButton--hero")[0].cloneNode(true);
+newButton.style.marginLeft = "0";
 document.getElementsByClassName("UIButton--hero")[0].style.display = "none";
 let oldButton = document.getElementsByClassName("UIButton--hero")[0];
 
@@ -120,6 +122,4 @@ document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(new
 //header, text content, button, button label, input
 let ui = [document.getElementsByClassName("UIHeading--three")[2], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0], input];
 
-newButton.onclick = function(){
-    inject(1.00);
-};
+newButton.onclick = inject;

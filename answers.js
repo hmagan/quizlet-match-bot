@@ -35,6 +35,6 @@ for(let i = 0; i < list.length; i++){
 }
 
 //print the array for the user to copy
-console.log("\nCOPY THIS VALUE (without the number in parentheses):");
+console.log("\nCOPY THIS ARRAY:");
 console.log(list);
-console.log("PASTE ABOVE into bot.js");
+console.log("PASTE INTO bot.js IN THE flashcards VARIABLE");
