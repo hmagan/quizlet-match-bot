@@ -11,8 +11,14 @@ for(let i = 0; i < flashcards.length; i+=2){
 }
 
 //finds target's matching term and returns its index in the array arr
-function findMatch(target, arr){
+function findMatch(t, arr){
     let other;
+    let target = t.childNodes[0].textContent;
+    if(t.childNodes.length > 1){
+        for(let i = 1; i < t.childNodes.length; i++){
+            target += t.childNodes[i].textContent;
+        }
+    }
     for(let i = 0; i < terms.length; i++){
         if(terms[i] === target){
             other = definitions[i];
@@ -24,7 +30,13 @@ function findMatch(target, arr){
         }
     }
     for(let i = 1; i < arr.length; i++){
-        if(arr[i].childNodes[0].childNodes[0].textContent === other){
+        let ans = arr[i].childNodes[0].childNodes[0].textContent;
+        if(arr[i].childNodes[0].childNodes.length > 1){
+            for(let j = 1; j < arr[i].childNodes[0].childNodes.length; j++){
+                ans += arr[i].childNodes[0].childNodes[j].textContent;
+            }
+        }
+        if(ans === other){
             return i;
         }
     }
@@ -49,8 +61,23 @@ function solve(delay){
     setTimeout(function(){
         let tiles = Array.from(document.getElementsByClassName("MatchModeQuestionGridTile-text"));
         while(tiles.length > 0){
-            let idx = findMatch(tiles[0].childNodes[0].childNodes[0].textContent, tiles);
-            console.log("MATCH FOUND: " + tiles[0].childNodes[0].childNodes[0].textContent + " AND " + tiles[idx].childNodes[0].childNodes[0].textContent);
+            let idx = findMatch(tiles[0].childNodes[0], tiles);
+            let fm, sm = "";
+            if(tiles[0].childNodes[0].childNodes.length > 1) {
+                for(let i = 0; i < tiles[0].childNodes[0].childNodes.length; i++){
+                    fm += tiles[0].childNodes[0].childNodes[i].textContent;
+                }
+            } else {
+                fm = tiles[0].childNodes[0].childNodes[0].textContent;
+            }
+            if(tiles[idx].childNodes[0].childNodes.length > 1) {
+                for(let i = 0; i < tiles[idx].childNodes[0].childNodes.length; i++){
+                    sm += tiles[idx].childNodes[0].childNodes[i].textContent;
+                }
+            } else {
+                sm = tiles[idx].childNodes[0].childNodes[0].textContent;
+            }
+            console.log("MATCH FOUND: " + fm + " AND " + sm);
             eventFire(tiles[0].childNodes[0].childNodes[0], "pointerdown");
             eventFire(tiles[idx].childNodes[0].childNodes[0], "pointerdown");
             tiles.splice(idx, 1);
@@ -62,6 +89,7 @@ function solve(delay){
 
 //loads up ui; mostly formatting
 function inject(){
+    ui[2].disabled = true;
     let opacity = 1.00;
     let fadeOut = setInterval(function(){
         if(opacity > 0){
@@ -95,6 +123,7 @@ function inject(){
                     }
                 } else {
                     clearInterval(fadeIn);
+                    oldButton.disabled = false;
                     ui[2].onclick = function(){
                         let delay = ui[4].value;
                         solve(delay);
@@ -110,6 +139,7 @@ let newButton = document.getElementsByClassName("UIButton--hero")[0].cloneNode(t
 newButton.style.marginLeft = "0";
 document.getElementsByClassName("UIButton--hero")[0].style.display = "none";
 let oldButton = document.getElementsByClassName("UIButton--hero")[0];
+oldButton.disabled = true;
 
 let input = document.createElement("input");
 input.style.display = "none";
@@ -119,7 +149,9 @@ document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(inp
 document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(oldButton);
 document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(newButton);
 
+let last = document.getElementsByClassName("UIHeading--three").length - 1;
+
 //header, text content, button, button label, input
-let ui = [document.getElementsByClassName("UIHeading--three")[2], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0], input];
+let ui = [document.getElementsByClassName("UIHeading--three")[last], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0], input];
 
 newButton.onclick = inject;
