@@ -16,3 +16,4 @@ That's it. If your script is running too quickly and Quizlet is rejecting your s
 
 2/3/2021: Now works with terms that have extra formatting and automatically escapes double quote characters
 2/4/2021: Added UI. Don't spam too quickly through it or it might glitch out
+2/8/2021: Fixed bugs regarding if you hadn't completed match before on the set or if there were line breaks in the terms + cleaned up the UI.
