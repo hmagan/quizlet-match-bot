@@ -108,12 +108,14 @@ function inject(){
             ui[3].textContent = "Inject script";
             ui[4].style.opacity = 0.00;
             ui[4].style.display = "inline-block";
-            ui[4].style.marginBottom = "50px";
+            ui[4].style.marginBottom = "30px";
             ui[4].style.fontSize = "18px";
             ui[4].defaultValue = 600;
             ui[4].type = "number";
             ui[4].step = 100;
             ui[4].min = 0;
+            ui[5].style.marginTop = "20px";
+            ui[5].style.display = "inline-block";
 
             let fadeIn = setInterval(function(){
                 if(opacity < 1.00){
@@ -144,14 +146,19 @@ oldButton.disabled = true;
 let input = document.createElement("input");
 input.style.display = "none";
 
+let name = document.createElement("p");
+name.textContent = "Code by Hank Magan";
+name.style.display = "none";
+
 document.getElementsByClassName("UIButton--hero")[0].remove();
 document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(input);
 document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(oldButton);
 document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(newButton);
+document.getElementsByClassName("MatchModeInstructionsModal")[0].appendChild(name);
 
 let last = document.getElementsByClassName("UIHeading--three").length - 1;
 
-//header, text content, button, button label, input
-let ui = [document.getElementsByClassName("UIHeading--three")[last], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0], input];
+//header, text content, button, button label, input, name
+let ui = [document.getElementsByClassName("UIHeading--three")[last], document.getElementsByClassName("UIParagraph")[0], newButton, document.getElementsByClassName("UIButton-wrapper")[0], input, name];
 
 newButton.onclick = inject;
