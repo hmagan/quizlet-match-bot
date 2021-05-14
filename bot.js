@@ -4,13 +4,11 @@ let flashcards = [];
 let terms = [];
 let definitions = [];
 
-//separate terms and definitions into two different arrays
 for(let i = 0; i < flashcards.length; i+=2){
     terms.push(flashcards[i]);
     definitions.push(flashcards[i+1]);
 }
 
-//finds target's matching term and returns its index in the array arr
 function findMatch(t, arr){
     let other;
     let target = t.childNodes[0].textContent;
@@ -43,7 +41,6 @@ function findMatch(t, arr){
     return -1;
 }
 
-//executes an event etype on an element el
 function eventFire(el, etype){
     if(el.fireEvent) {
         el.fireEvent('on' + etype);
@@ -54,7 +51,6 @@ function eventFire(el, etype){
     }
 }
 
-//solves match after a specified delay
 function solve(delay){
     console.log("SCRIPT INITIALIZED");
     //600ms delay by default; varies by set, so modify to your needs; anything less and Quizlet might reject your score
@@ -87,7 +83,6 @@ function solve(delay){
     }, delay);
 }
 
-//loads up ui; mostly formatting
 function inject(){
     ui[2].disabled = true;
     let opacity = 1.00;
@@ -136,7 +131,6 @@ function inject(){
     }, 5);
 }
 
-//creates a fake button to load up the cheat, hides the old button for later, and adds an input field
 let newButton = document.getElementsByClassName("UIButton--hero")[0].cloneNode(true);
 newButton.style.marginLeft = "0";
 document.getElementsByClassName("UIButton--hero")[0].style.display = "none";
